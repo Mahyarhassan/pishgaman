@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/assets/login/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="~/assets/login/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/assets/login/css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="~/assets/login/css/style.css">
+
+    <title>Login #7</title>
+
+    <style>
+        #cop {
+            color: white;
+            font-size: 25px;
+        }
+
+        .btn {
+            color: white !important;
+            font-size: 20px;
+            background-color: mediumslateblue;
+            text-decoration: none;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        form {
+            direction: rtl;
+        }
+
+        .form-group {
+            margin: 3px 0;
+            border-radius: 5px;
+        }
+
+        .o0 {
+            opacity: 0;
+            position: fixed;
+            visibility: hidden;
+        }
+
+        .o1 {
+            opacity: 1;
+            position: static;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 imgholder">
+                    <img src="~/assets/login/images/undraw_remotely_2j6y.svg" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="text-center holder">
+
+                                <a href="#" id="rigester" class="btn">ثبت نام</a>
+
+                                <a href="#" id="login" class="btn">ورود</a>
+
+
+                            </div>
+                            <form id="formRigester" action="#" method="post" class="o0">
+                                <div class="form-group first">
+                                    <label for="FirstName">نام :</label>
+                                    <input type="text" class="form-control" id="FirstName" name="__RequestVerificationToken">
+
+                                </div>
+                                <div class="form-group first">
+                                    <label for="LastName">نام خانوادگی :</label>
+                                    <input type="text" class="form-control" id="LastName" name="__RequestVerificationToken">
+
+                                </div>
+                                <div class="form-group first">
+                                    <label for="Phone">شماره موبایل :</label>
+                                    <input type="tel" class="form-control" id="Phone" name="__RequestVerificationToken">
+                                </div>
+                                <div class="form-group first">
+                                    <label for="Email">ایمیل :</label>
+                                    <input type="email" class="form-control" id="Email" name="__RequestVerificationToken">
+                                </div>
+                                <div class="form-group first">
+                                    <label for="UserName">نام کاربری :</label>
+                                    <input type="text" class="form-control" id="UserName" name="__RequestVerificationToken">
+                                </div>
+                                <div class="form-group first">
+                                    <label for="Password">کلمه عبور :</label>
+                                    <input type="password" class="form-control" id="Password" name="__RequestVerificationToken">
+                                </div>
+
+                                <a id="cop" value="Log In" class="btn btn-block btn-primary">ثبت نام</a>
+
+
+
+                            </form>
+                            <form id="formLogin" action="#" method="post" class="o1">
+                                <div class="form-group first">
+                                    <label for="LUserName">نام کاربری :</label>
+                                    <input type="text" class="form-control" id="LUserName" name="__RequestVerificationToken">
+                                </div>
+                                <div class="form-group first">
+                                    <label for="LPassword">کلمه عبور :</label>
+                                    <input type="password" class="form-control" id="LPassword" name="__RequestVerificationToken">
+                                </div>
+                                <a id="cop2" value="Log In" class="btn btn-block btn-primary">ورود</a>
+
+
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/assets/login/js/jquery-3.3.1.min.js"></script>
+    <script src="~/assets/login/js/popper.min.js"></script>
+    <script src="~/assets/login/js/bootstrap.min.js"></script>
+    <script src="~/assets/login/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/assets/js/main.js"></script>
+
+
+</body>
+</html>

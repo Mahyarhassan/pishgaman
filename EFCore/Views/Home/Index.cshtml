@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+
+}
+
+<div class="modal fade" id="myModal" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">اضافه کردن یا ویرایش پرسنل</h4>
+            </div>
+            <div class="modal-body">
+                <h4><strong>نام :</strong></h4>  <textarea class="EFName" type="text"></textarea> <br>
+                <h4> <strong>نام خانوادگی :</strong></h4>   <textarea class="ELName" type="number"></textarea> <br>
+                <h4><strong>موبایل : </strong></h4>  <textarea class="EPhone"></textarea>
+                <h4><strong>ایمیل : </strong></h4>  <textarea class="EEmail"></textarea>
+                <h4><strong>نام کاربری : </strong></h4>  <textarea class="EUserName"></textarea>
+                <h4><strong>رمز ورود : </strong></h4>  <textarea class="EPassword"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default float-right" data-dismiss="modal">بستن</button>
+                <button type="button" id="this_1" class="btn btnEdite btn-success float-left" data-dismiss="modal">ذخیره </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary filterable">
+    <div class="panel-heading">
+        <h3 class="panel-title">پرسنل</h3>
+        <div class="pull-left">
+            <button class="btn btn-success btn-xs shomod " onclick="Adduser()" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" style="margin: 0 3px;"></i> اضافه کردن شخص جدید</button>
+            <button class="btn btn-default btn-xs btn-filter">  <i class="fa fa-filter" style="margin: 0 3px;"></i>فیلتر</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr class="filters">
+                <th><input type="text" class="form-control" placeholder="ردیف" disabled></th>
+                <th><input type="text" class="form-control" placeholder="نام" disabled></th>
+                <th><input type="text" class="form-control" placeholder="نام خوانوادگی" disabled></th>
+                <th><input type="text" class="form-control" placeholder="شماره تماس" disabled></th>
+                <th><input type="text" class="form-control" placeholder="ایمیل" disabled></th>
+                <th><input type="text" class="form-control" placeholder="نام کاربری" disabled></th>
+                <th><input type="text" class="form-control" placeholder="رمز عبور" disabled></th>
+                <th><input type="text" class="form-control" placeholder="ویرایش" disabled></th>
+                <th><input type="text" class="form-control" placeholder="حذف" disabled></th>
+            </tr>
+        </thead>
+        <tbody id="tbl-user">
+        </tbody>
+    </table>
+</div>
+@section js {
+
+    <script src="~/assets/js/ft.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var EditOrAdd = "";
+            console.log(EditOrAdd);
+            var token = $('input[name=__RequestVerificationToken]').val();
+            $.post("/Home/GetUser", { __RequestVerificationToken: token })
+                .done(function (res) {
+                    console.log(res);
+
+                    $('#tbl-user').empty();
+                    for (var item in res) {
+                        $('#tbl-user').append(
+
+                            `
+            <tr>
+            <td class="">${res[item].userId}</td>
+            <td class="FName">${res[item].firstName}</td>
+            <td class="LName">${res[item].lastName}</td>
+            <td class="Phone">${res[item].phone}</td>
+            <td class="Email">${res[item].email}</td>
+            <td class="UserName">${res[item].username}</td>
+            <td class="Password">${res[item].password}</td>
+            <td> <button  type="button" id="num_${res[item].userId}"class="btn Edite btn-info btn-md" data-toggle="modal" data-target="#myModal"  >ویرایش</button></td>
+                    <td> <button  type="button" id="Del_${res[item].userId}"class="btn Delete btn-danger btn-md">حذف</button></td>
+
+            </tr>
+                                                                                `
+                        )
+                    }
+                })
+                .fail(function () {
+
+                })
+                .always(function () {
+
+                });
+
+
+            $(document).on('click', '.Edite', function () {
+
+                var id = $(this).attr("id");
+                var newid = id.split("_");
+                console.log(newid[1]);
+                $(".btnEdite").attr('id', "this_" + newid[1]);
+
+                // var row = $(id).closest('tr').css({ "color": "red", "border": "2px solid red" });
+                var row = $(this).closest('tr');
+                var FName = row.find('.FName').text();
+                var LName = row.find('.LName').text();
+                var Phone = row.find('.Phone').text();
+                var Email = row.find('.Email').text();
+                var UserName = row.find('.UserName').text();
+                var Password = row.find('.Password').text();
+
+                $('.EFName').val(FName);
+                $('.ELName').val(LName);
+                $('.EPhone').val(Phone);
+                $('.EEmail').val(Email);
+                $('.EUserName').val(UserName);
+                $('.EPassword').val(Password);
+                EditOrAdd = "Edite";
+
+
+            });
+
+            $(document).on('click', '.btnEdite', function () {
+
+                var EFName = $('.EFName').val();
+                var ELName = $('.ELName').val();
+                var EPhone = $('.EPhone').val();
+                var EEmail = $('.EEmail').val();
+                var EUserName = $('.EUserName').val();
+                var EPassword = $('.EPassword').val();
+
+                var id = $(this).attr('id').split('_');
+                console.log(id[1]);
+                var token = $('input[name=__RequestVerificationToken]').val();
+                $.post("/Home/EditOrAddUser", {
+                    id: id[1], EFName: EFName, ELName: ELName, EPhone: EPhone, EEmail: EEmail,
+                    EditOrAdd: EditOrAdd, EPassword: EPassword, EUserName: EUserName, __RequestVerificationToken: token
+                })
+                    .done(function (res) {
+
+
+                        console.log(res);
+                        console.log(res.state);
+                        console.log(res.res);
+                        if (res.state == "true") {
+
+                            if (EditOrAdd == "Edite") {
+
+
+                                console.log("#num_" + id[1]);
+                                var row = $("#num_" + id[1]).closest('tr').css({ "color": "green", "border": "2px solid green" });
+
+                                row.find('.FName').html(EFName);
+                                row.find('.LName').html(ELName);
+                                row.find('.Phone').html(EPhone);
+                                row.find('.Email').html(EEmail);
+                                row.find('.UserName').html(EUserName);
+                                row.find('.Password').html(EPassword);
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "موفق",
+                                    text: "ویرایش اطلاعات شخص نظر با موفقیت انجام شد",
+
+                                });
+                            } else {
+
+                                $('#tbl-user').append(
+
+                   `
+                    <tr>
+                    <td class="">${res.res.userId}</td>
+                    <td class="FName">${res.res.firstName}</td>
+                    <td class="LName">${res.res.lastName}</td>
+                    <td class="Phone">${res.res.phone}</td>
+                    <td class="Email">${res.res.email}</td>
+                    <td class="UserName">${res.res.username}</td>
+                    <td class="Password">${res.res.password}</td>
+                    <td> <button  type="button" id="num_${res.res.userId}"class="btn Edite btn-info btn-md" data-toggle="modal" data-target="#myModal"  >ویرایش</button></td>
+                    <td> <button  type="button" id="Del_${res.res.userId}"class="btn Delete btn-danger btn-md">حذف</button></td>
+                    </tr>
+                  `
+
+                                );
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "موفق",
+                                    text: "شخص جدید با موفقیت اضافه شد",
+                                });
+                            }
+
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "خطا",
+                                text: res.state,
+                                footer: "خطایی رخ داد یه بار دیگ امتحان کن"
+                            });
+                        }
+                    })
+                    .fail(function () {
+
+
+                    })
+                    .always(function () {
+
+
+                    });
+            });
+
+            $(document).on('click', '.Delete', function () {
+
+
+                var id = $(this).attr("id").split("_");
+                Swal.fire({
+                    title: "توجه",
+                    text: "ایا مطمعنی میخوای این شخص رو حذف کنی ؟",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "بله حذف کن",
+                    cancelButtonText: "خیر"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.post("/Home/DeleteUser", { id: id[1] })
+                            .done(function (res) {
+
+                                if (res == true) {
+
+                                    Swal.fire({
+                                        title: "حذف شد",
+                                        text: "باموفقیت حذف شد",
+                                        icon: "success"
+                                    });
+                                    var row = $("#num_" + id[1]).closest('tr').remove();
+
+                                }
+
+                            })
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+            })
+
+
+        });
+        function Adduser() {
+            EditOrAdd = "Add";
+            $('.EFName').val("");
+            $('.ELName').val("");
+            $('.EPhone').val("");
+            $('.EEmail').val("");
+            $('.EUserName').val("");
+            $('.EPassword').val("");
+        }
+
+    </script>
+
+
+}
