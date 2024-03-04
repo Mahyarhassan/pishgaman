@@ -38,7 +38,6 @@ namespace EFCore.Controllers
                         // Save JWT token in cookie
                         //var userNameClaim = claimsPrincipal.Item2.FindFirst(ClaimTypes.Name).Value;
                         ViewBag.curentUser = claimsPrincipal.Item2?.Identity?.Name;
-                        ViewBag.curentClaim = claimsPrincipal.Item2?.FindFirst(ClaimTypes.Name)?.Value;
                         return View();
                     }
                     else
